@@ -57,7 +57,9 @@ public class TeacherServiceImp implements TeacherService {
 
 
 
-
+    public void TeacherService() {
+        System.out.println("inside teacher service");
+    }
 
 
 
@@ -73,7 +75,7 @@ public class TeacherServiceImp implements TeacherService {
         Teacher teacher1 = teacherByName.get();
 
         teacher1.setEmail(teacher.getEmail());
-        teacher1.setAddress(teacher.getAddress());
+        teacher1.setSection(teacher.getSection());
 
         return teacherRepository.save(teacher1);
 

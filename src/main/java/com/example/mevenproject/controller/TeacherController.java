@@ -7,6 +7,7 @@ import com.example.mevenproject.exception.TeacherAlreadyExist;
 import com.example.mevenproject.exception.TeacherNotFoundException;
 import com.example.mevenproject.request.AdditionRequest;
 import com.example.mevenproject.service.TeacherService;
+import com.example.mevenproject.service.TeacherServiceImp;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,10 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 //@RequestMapping("/teacher")
-@RestController
+@Controller
 public class TeacherController {
     @Autowired
-    private TeacherService teacherService;
+    private TeacherServiceImp teacherService;
     @PostMapping("/createTeacher")
     public ResponseEntity<?> createTeacher( @Valid @RequestBody Teacher teacher) throws TeacherAlreadyExist {
         try{
@@ -49,9 +50,8 @@ public class TeacherController {
     @RestControllerAdvice
     public static class RestExceptionHandler extends ResponseEntityExceptionHandler {
         @Override
-        protected ResponseEntity<Object> handleMethodArgumentNotValid(
-                MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-            ErrorModel error = new ErrorModel(HttpStatus.BAD_REQUEST, "Validation Error", ex.getBindingResult().toString());
+        protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+            ErrorModel error = new ErrorModel(HttpStatus.BAD_REQUEST, "Validation Error", ex.getBindingResult().getAllErrors().iterator().next().getDefaultMessage());
 
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
@@ -64,19 +64,27 @@ public class TeacherController {
 
     }
     @RequestMapping(value = "/RegisterMe", method = RequestMethod.POST)
-    public String registerMe(Teacher teacher)
-    {
-        System.out.println(teacher.getName());
+    public String registerMe(Teacher teacher) throws TeacherAlreadyExist {
+        try{
+            System.out.println("inside Me");
+            teacherService.createTeacher(teacher);
+
+        }
+        catch(TeacherAlreadyExist e)
+        {
+            return "hello";
+            //return e.getMessage();
+        }
         return "hello";
     }
-    @ResponseBody
+
     @RequestMapping(value = "/hell", method = RequestMethod.GET)
-    public String helloqq(@RequestParam(value="name",defaultValue = "World") String name, Model model) {
+    public ModelAndView helloqq(@RequestParam(value="name",defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
-        //return new ModelAndView("hello");
-        return "hello";
+        return new ModelAndView("hello");
+
     }
-    @ResponseBody
+
     @RequestMapping(value = "/hel", method = RequestMethod.GET)
     public String hellow()
     {
