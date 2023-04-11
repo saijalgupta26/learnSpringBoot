@@ -57,7 +57,7 @@ public class TeacherController {
         }
     }
 
-    @RequestMapping (value = "/hello", method = RequestMethod.GET)
+    @RequestMapping (value = "/hello")
     public String hello(@RequestParam(value="name",defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
         return "registration";
@@ -65,17 +65,10 @@ public class TeacherController {
     }
     @RequestMapping(value = "/RegisterMe", method = RequestMethod.POST)
     public String registerMe(Teacher teacher) throws TeacherAlreadyExist {
-        try{
-            System.out.println("inside Me");
-            teacherService.createTeacher(teacher);
 
-        }
-        catch(TeacherAlreadyExist e)
-        {
-            return "hello";
-            //return e.getMessage();
-        }
+        teacherService.createTeacher(teacher);
         return "hello";
+
     }
 
     @RequestMapping(value = "/hell", method = RequestMethod.GET)
