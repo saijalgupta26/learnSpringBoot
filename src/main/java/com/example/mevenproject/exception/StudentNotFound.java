@@ -1,9 +1,12 @@
 package com.example.mevenproject.exception;
 
-public class TeacherAlreadyExist extends Exception {
+import java.io.Serial;
+
+public class StudentNotFound extends Exception {
+    @Serial
     private static final long serialVersionUID = 1L;
-    public TeacherAlreadyExist(String error)
-    {
+    public StudentNotFound(String error){
         super(error);
     }
+
 }

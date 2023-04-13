@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -195,12 +197,13 @@
 <label>UserName</label><input type="text" name="username"></input><br><br>
 <label>Password</label><input type="password" name="pwd"></input><br><button type ="Submit">Login</button>
 </form> -->
+
 <div class="login-box">
     <h2>Login</h2>
-    <form action="Admin?action=login" method="post">
+    <form action="/teacherlogin" method="post">
         <div class="user-box">
-            <input type="text" name="username" required="">
-            <label>Username</label>
+            <input type="text" name="name" required="">
+            <label>name</label>
         </div>
         <div class="user-box">
             <input type="password" name="password" required="">

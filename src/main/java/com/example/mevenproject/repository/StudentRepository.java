@@ -1,15 +1,14 @@
 package com.example.mevenproject.repository;
 
-
-import com.example.mevenproject.document.Teacher;
+import com.example.mevenproject.document.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface TeacherRepository  extends MongoRepository<Teacher,String> {
-    Optional<Teacher> findTeacherByName(String name);
-
+public interface StudentRepository extends MongoRepository<Student,String>
+{
+    Optional<Student> findByRollno(int rollno);
 
 }

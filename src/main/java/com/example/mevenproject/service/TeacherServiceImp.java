@@ -2,100 +2,78 @@ package com.example.mevenproject.service;
 
 
 import com.example.mevenproject.document.Teacher;
-import com.example.mevenproject.exception.TeacherAlreadyExist;
-import com.example.mevenproject.exception.TeacherNotFoundException;
 import com.example.mevenproject.repository.TeacherRepository;
-import com.example.mevenproject.request.AdditionRequest;
+import com.example.mevenproject.request.TeacherRequest;
+import com.example.mevenproject.response.TeacherResponse;
+import com.example.mevenproject.utill.TeacherTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TeacherServiceImp implements TeacherService {
+
+
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private TeacherTransformer teacherTransformer;
 
 
     @Override
-    public Teacher createTeacher(Teacher teacher) throws TeacherAlreadyExist {
-        try {
-            Teacher teacher1 = teacherRepository.save(teacher);
-
-            return teacher1;
-        }catch (Exception e){
-            throw new TeacherAlreadyExist("Teacher Already exist");
-        }
-    }
-
-    @Override
-    public List<Teacher> getAll() {
-        List<Teacher> teacherList = teacherRepository.findAll();
-        return teacherList;
-    }
-    //api-application programing interface
-
-    @Override
-    public Teacher getTeacherByName(String name) throws TeacherNotFoundException {
-        Teacher teacher1 = null;
-        Optional<Teacher> teacher=teacherRepository.findTeacherByName(name);
-            try{
-                if(teacher.isEmpty()) {
-                    throw new TeacherNotFoundException("Teacher Not Found");
-                }
-                teacher1 = teacher.get();
-                return  teacher1;
-
-            }
-            catch(TeacherNotFoundException e)
-            {
-                e.printStackTrace();
-            }
-            return teacher1;
-        }
-
-
-
-    public void TeacherService() {
-        System.out.println("inside teacher service");
-    }
-
-
-
-
-    @Override
-    public Teacher updateTeacher(String name, Teacher teacher) throws TeacherNotFoundException {
-
-        Optional<Teacher> teacherByName = teacherRepository.findTeacherByName(name);
-        if(teacherByName.isEmpty())
-        {
-            throw  new TeacherNotFoundException("teacher not found");
-        }
-        Teacher teacher1 = teacherByName.get();
-
-        teacher1.setEmail(teacher.getEmail());
-        teacher1.setSection(teacher.getSection());
-
-        return teacherRepository.save(teacher1);
+    public TeacherResponse createTeacher(TeacherRequest teacherRequest) {
+        Teacher teacher = teacherTransformer.transformerTeacher(teacherRequest);
+        Teacher teacher1 = teacherRepository.save(teacher);
+        return teacherTransformer.prepareTeacher(teacher1);
 
 
     }
 
     @Override
-    public String delete(String name) throws TeacherNotFoundException {
+    public List<Teacher> findAllTeacher() {
+        return teacherRepository.findAll();
+    }
 
-        Teacher teacherByName = getTeacherByName(name);
-
-
+    @Override
+    public String delete(String name) {
+        Teacher teacherByName = findTeacherByName(name);
         teacherRepository.delete(teacherByName);
-        return "delete data ";
+        return "delete teacher successfully";
+
+
     }
 
     @Override
-    public double addition(AdditionRequest additionRequest) {
+    public Teacher updateTeacher(String name, Teacher teacher) {
+        Teacher teacherByName = findTeacherByName(name);
+        teacherByName.setName(teacher.getName());
+        teacherByName.setEmail(teacher.getEmail());
+        teacherByName.setAddress(teacher.getAddress());
+        return teacherRepository.save(teacherByName);
 
-        return additionRequest.getFirstElement()+additionRequest.getSecondElement();//api-used for communiaction bw two software and system
+
     }
-    //restAPI-represention state transfer
+
+    @Override
+    public Teacher findTeacherByName(String name) {
+        Optional<Teacher> teacher = teacherRepository.findTeacherByName(name);
+        if (!teacher.isPresent()) {
+            return null;
+        } else {
+            return teacher.get();
+        }
+
+    }
+
+    @RequestMapping(value = "/hello")
+    public String hello() {
+
+        return "registration";
+
+    }
+
 }
