@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TeacherRequest {
     private String name;
-    private  String email;
+    private String email;
     private String address;
 }

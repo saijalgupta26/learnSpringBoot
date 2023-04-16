@@ -4,11 +4,9 @@ import lombok.Data;
 
 @Data
 public class StudentResponse {
-
-    private  String name;
-
-
+    private String name;
     private int rollno;
     private String section;
-    private  String branch;
+    private String email;
+    private String password;
 }

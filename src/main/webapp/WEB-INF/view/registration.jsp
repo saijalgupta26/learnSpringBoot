@@ -179,10 +179,7 @@
 
   <h2>Register Here</h2>
   <form action="RegisterMe" method="post">
-    <div class="user-box">
-      <input type="text" name="username" required="">
-      <label>Username</label>
-    </div>
+
     <div class="user-box">
       <input type="text" name="name" required="">
       <label>Name</label>
@@ -202,7 +199,9 @@
     <div class="user-box">
       <input type="number" name="rollno" required="">
       <label>Rollno</label>
+
     </div>
+
 
 
     <button type="submit" style="width:fit-content;height: fit-content; background-color:black; color:white; font-size:10px; ">register</button>

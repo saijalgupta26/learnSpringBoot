@@ -1,6 +1,5 @@
 package com.example.mevenproject.service;
 
-
 import com.example.mevenproject.document.Teacher;
 import com.example.mevenproject.repository.TeacherRepository;
 import com.example.mevenproject.request.TeacherRequest;
@@ -9,28 +8,22 @@ import com.example.mevenproject.utill.TeacherTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TeacherServiceImp implements TeacherService {
-
-
     @Autowired
     private TeacherRepository teacherRepository;
     @Autowired
     private TeacherTransformer teacherTransformer;
-
 
     @Override
     public TeacherResponse createTeacher(TeacherRequest teacherRequest) {
         Teacher teacher = teacherTransformer.transformerTeacher(teacherRequest);
         Teacher teacher1 = teacherRepository.save(teacher);
         return teacherTransformer.prepareTeacher(teacher1);
-
-
     }
 
     @Override
@@ -43,8 +36,6 @@ public class TeacherServiceImp implements TeacherService {
         Teacher teacherByName = findTeacherByName(name);
         teacherRepository.delete(teacherByName);
         return "delete teacher successfully";
-
-
     }
 
     @Override
@@ -52,28 +43,18 @@ public class TeacherServiceImp implements TeacherService {
         Teacher teacherByName = findTeacherByName(name);
         teacherByName.setName(teacher.getName());
         teacherByName.setEmail(teacher.getEmail());
-        teacherByName.setAddress(teacher.getAddress());
         return teacherRepository.save(teacherByName);
-
-
     }
 
     @Override
     public Teacher findTeacherByName(String name) {
         Optional<Teacher> teacher = teacherRepository.findTeacherByName(name);
-        if (!teacher.isPresent()) {
-            return null;
-        } else {
-            return teacher.get();
-        }
-
+        return teacher.orElse(null);
     }
 
     @RequestMapping(value = "/hello")
     public String hello() {
-
         return "registration";
-
     }
 
 }

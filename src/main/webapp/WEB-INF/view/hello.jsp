@@ -200,10 +200,10 @@
 
 <div class="login-box">
     <h2>Login</h2>
-    <form action="/teacherlogin" method="post">
+    <form action="/student/loginPage" method="post">
         <div class="user-box">
-            <input type="text" name="name" required="">
-            <label>name</label>
+            <input type="email" name="email" required="">
+            <label>email</label>
         </div>
         <div class="user-box">
             <input type="password" name="password" required="">
